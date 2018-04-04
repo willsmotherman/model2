@@ -22,7 +22,7 @@ function varargout = finalProjecctfig(varargin)
 
 % Edit the above text to modify the response to help finalProjecctfig
 
-% Last Modified by GUIDE v2.5 04-Apr-2018 14:37:10
+% Last Modified by GUIDE v2.5 04-Apr-2018 15:31:58
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -174,13 +174,13 @@ function planetEarth_Callback(hObject, eventdata, handles)
 % Hint: get(hObject,'Value') returns toggle state of planetEarth
 
 
-% --- Executes on button press in forceToggle.
-function forceToggle_Callback(hObject, eventdata, handles)
-% hObject    handle to forceToggle (see GCBO)
+% --- Executes on button press in errorToggle.
+function errorToggle_Callback(hObject, eventdata, handles)
+% hObject    handle to errorToggle (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of forceToggle
+% Hint: get(hObject,'Value') returns toggle state of errorToggle
 
 
 % --- Executes on button press in goButton.
@@ -188,10 +188,29 @@ function goButton_Callback(hObject, eventdata, handles)
 % hObject    handle to goButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+axes(handles.pendulumGraph);
+plot([.2,.3,.4],[.7,.4,.3])
+if(get(handles.errorToggle,'Value')==0)
+    plot([.2,.3,.4],[.7,.4,.8])
+else
+    plot([.4,.3,.4],[.7,.4,.8])
+end
 
 % --- Executes on button press in clearButton.
 function clearButton_Callback(hObject, eventdata, handles)
 % hObject    handle to clearButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.finalTemp,'');
+set(handles.initialTemp,'');
+axes(handles.pendulumGraph);
+cla;
+axes(handles.errorGraph);
+cla;
+
+
+% --- Executes on button press in stopButton.
+function stopButton_Callback(hObject, eventdata, handles)
+% hObject    handle to stopButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
