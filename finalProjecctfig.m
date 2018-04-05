@@ -214,18 +214,25 @@ switch a
     case 8
         alpha = 8.6;
 end
+alpha = alpha*10^-6;
 g = 9.81;
-ogLength = 0.0508142;
-time = [0:1:14*24*60]; %2 weeks, update every minute
+ogLength = 0.24849;
+time = [0:1:14*24*60*60]; %2 weeks, update every second
 ogTemp = str2double(get(handles.initialTemp,'String'));
 fTemp = str2double(get(handles.finalTemp,'String'))
 newTemp = linspace(ogTemp,fTemp,length(time));
 newLength = alpha*ogLength*(newTemp-ogTemp)+ogLength;
-periodCorrect = 2*pi()*(0.0508142/g)^.5;
+periodCorrect = 2*pi()*(ogLength/g)^.5;
 periodError = 2*pi()*(newLength/g).^.5;
+totalError(1) = 0;
+for r=2:length(time)
+    totalError(r)=totalError(r-1)+periodError(r)-periodCorrect;
+end
 axes(handles.errorGraph);
+yyaxis left
 plot(time,periodError,3600,periodCorrect,'o');
-
+yyaxis right
+plot(time,totalError)
 
 
 % --- Executes on button press in clearButton.

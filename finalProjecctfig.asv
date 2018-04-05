@@ -195,21 +195,40 @@ if(get(handles.errorToggle,'Value')==0)
 else
     plot([.4,.3,.4],[.7,.4,.8])
 end
-a = get(handles.material,);
+a = get(handles.material,'Value');
 switch a
     case 1
         alpha = 23.1;
     case 2
-        
-ogLength = 0.0508142;
-time = [0:1:14*24*60]; %2 weeks, update every minute
-ogTemp = get(handles.initialTemp);
-newTemp = linspace(ogTemp,finalTemp,length(time));
+        alpha = 19;
+    case 3
+        alpha = 14;
+    case 4
+        alpha = 54;
+    case 5
+        alpha = 9;
+    case 6
+        alpha = 150;
+    case 7
+        alpha = .59;
+    case 8
+        alpha = 8.6;
+end
+alpha = alpha*10^-6;
+g = 9.81;
+ogLength = 0.24849;
+time = [0:1:14*24*60*60]; %2 weeks, update every second
+ogTemp = str2double(get(handles.initialTemp,'String'));
+fTemp = str2double(get(handles.finalTemp,'String'))
+newTemp = linspace(ogTemp,fTemp,length(time));
 newLength = alpha*ogLength*(newTemp-ogTemp)+ogLength;
-periodCorrect = 2*pi()*(0.0508142/g)^.5;
-periodError = 2*pi()*(newLength/g)^.5;
+periodCorrect = 2*pi()*(ogLength/g)^.5;
+periodError = 2*pi()*(newLength/g).^.5;
+totalError
+for r=2:time(length)
+    totalError(r)=totalError(r-1)+
 axes(handles.errorGraph);
-plot(time,periodError);
+plot(time,periodError,3600,periodCorrect,'o');
 
 
 
@@ -218,8 +237,8 @@ function clearButton_Callback(hObject, eventdata, handles)
 % hObject    handle to clearButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-set(handles.finalTemp,'');
-set(handles.initialTemp,'');
+%set(handles.finalTemp,'');
+%set(handles.initialTemp,'');
 axes(handles.pendulumGraph);
 cla;
 axes(handles.errorGraph);
