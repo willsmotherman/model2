@@ -7,11 +7,12 @@ deltaT = .03;
 velocity = 0;
 mass = 4;
 
-initial_angle = deg2rad(30);
+initial_angle = deg2rad(120);
 T = 2*pi*sqrt(length/gravity)*(1+(1/16)*initial_angle*initial_angle + (11/3072)*initial_angle*initial_angle*initial_angle*initial_angle);
 angle = initial_angle;
 velocity = 0;
 time = 0;
+timet = 0;
 linVx = velocity*length*cos(angle);
 linVy = velocity*length*sin(angle);
 linV = sqrt(linVx*linVx +linVy*linVy);
@@ -30,6 +31,7 @@ while(true)
     angle = initial_angle*cos(2*pi*(time+deltaT)/T);
     velocity = maxVelocity*sin(2*pi*(time+deltaT)/T);
     time = time + deltaT;
+    timet = timet + deltaT;
     x(1) = 0;
     y(1) = 0;
     x(2) = sin(angle)*length;
@@ -41,8 +43,8 @@ while(true)
     text(-olength*2,-1.1*olength*2,strcat('Period:',num2str(T)));
     text(-olength*2,-1.3*olength*2,strcat('Length:',num2str(length)));
     pbaspect([1 1 1]);
-    fprintf('Angle:%g Velocity:%g\n',angle,velocity);
-    length = length +.005;
+    fprintf('Angle:%g Velocity:%g Time:%g\n',angle,velocity,timet);
+    length = length + .005*sin(timet/4);
     [totalEnergyMax time T] = sliderCallback( velocity, length, angle, mass, gravity);
     pause(deltaT);
 end
