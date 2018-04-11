@@ -219,10 +219,14 @@ g = 9.81;
 ogLength = 0.24849;
 time = [0:1:14*24*60*60]; %2 weeks, update every second
 ogTemp = str2double(get(handles.initialTemp,'String'));
-fTemp = str2double(get(handles.finalTemp,'String'))
+fTemp = str2double(get(handles.finalTemp,'String'));
 newTemp = linspace(ogTemp,fTemp,length(time));
 newLength = alpha*ogLength*(newTemp-ogTemp)+ogLength;
-periodCorrect = 2*pi()*(ogLength/g)^.5;
+%periodCorrect = 2*pi()*(ogLength/g)^.5;
+
+%initial_angle = deg2rad(64.1);
+%periodCorrect = 2*pi*sqrt(newLength/g)*(1+(1/16)*initial_angle*initial_angle + (11/3072)*initial_angle*initial_angle*initial_angle*initial_angle);
+
 periodError = 2*pi()*(newLength/g).^.5;
 totalError(1) = 0;
 for r=2:length(time)
