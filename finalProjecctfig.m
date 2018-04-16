@@ -189,12 +189,7 @@ function goButton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 axes(handles.pendulumGraph);
-plot([.2,.3,.4],[.7,.4,.3])
-if(get(handles.errorToggle,'Value')==0)
-    plot([.2,.3,.4],[.7,.4,.8])
-else
-    plot([.4,.3,.4],[.7,.4,.8])
-end
+
 a = get(handles.material,'Value');
 switch a
     case 1
@@ -215,29 +210,34 @@ switch a
         alpha = 8.6;
 end
 alpha = alpha*10^-6;
-g = 9.81;
+if get(handles.planetEarth,'Value')
+    g = 9.81;
+elseif get(handles.planetMoon,'Value')
+    g = 1.62;
+else
+    g = 3.711;
+end
 ogLength = 0.24849;
 time = [0:1:14*24*60*60]; %2 weeks, update every second
 ogTemp = str2double(get(handles.initialTemp,'String'));
 fTemp = str2double(get(handles.finalTemp,'String'));
 newTemp = linspace(ogTemp,fTemp,length(time));
 newLength = alpha*ogLength*(newTemp-ogTemp)+ogLength;
-%periodCorrect = 2*pi()*(ogLength/g)^.5;
 
-%initial_angle = deg2rad(64.1);
-%periodCorrect = 2*pi*sqrt(newLength/g)*(1+(1/16)*initial_angle*initial_angle + (11/3072)*initial_angle*initial_angle*initial_angle*initial_angle);
+initial_angle = deg2rad(30);
+periodCorrect = 2*pi*sqrt(ogLength/g)*(1+(1/16)*initial_angle*initial_angle + (11/3072)*initial_angle*initial_angle*initial_angle*initial_angle);
+periodError = 2*pi*sqrt(newLength/g)*(1+(1/16)*initial_angle*initial_angle + (11/3072)*initial_angle*initial_angle*initial_angle*initial_angle);
 
-periodError = 2*pi()*(newLength/g).^.5;
+%periodError = 2*pi()*(newLength/g).^.5;
 totalError(1) = 0;
 for r=2:length(time)
     totalError(r)=totalError(r-1)+periodError(r)-periodCorrect;
 end
 axes(handles.errorGraph);
 yyaxis left
-plot(time,periodError,3600,periodCorrect,'o');
+plot(time,periodError,time,zeros(1,length(time))+periodCorrect);
 yyaxis right
 plot(time,totalError)
-
 
 % --- Executes on button press in clearButton.
 function clearButton_Callback(hObject, eventdata, handles)
