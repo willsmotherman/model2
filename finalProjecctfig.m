@@ -188,6 +188,8 @@ function goButton_Callback(hObject, eventdata, handles)
 % hObject    handle to goButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+global xv;
+xv = false;
 axes(handles.pendulumGraph);
 
 a = get(handles.material,'Value');
@@ -243,6 +245,8 @@ yyaxis right
 plot(time/3600/24,totalError)
 ylabel('Total error (s)')
 
+xv = false;
+
 % --- Executes on button press in clearButton.
 function clearButton_Callback(hObject, eventdata, handles)
 % hObject    handle to clearButton (see GCBO)
@@ -261,3 +265,5 @@ function stopButton_Callback(hObject, eventdata, handles)
 % hObject    handle to stopButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
