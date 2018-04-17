@@ -249,7 +249,7 @@ ylabel('Total error (s)')
 axes(handles.pendulumGraph);
 l = ogLength;
 olength = l;
-gravity = 9.8;
+gravity = g;
 deltaT = .05;
 acc = 0;
 mass = 4;
@@ -328,6 +328,10 @@ function clearButton_Callback(hObject, eventdata, handles)
 %set(handles.initialTemp,'');
 global xv;
 xv = false;
+global pausew;
+if(pausew)
+    pausew = false;
+end
 axes(handles.pendulumGraph);
 cla reset;
 axes(handles.errorGraph);
@@ -355,7 +359,7 @@ global xv;
 % Hint: delete(hObject) closes the figure
 xv=false;
 delete(hObject);
-pause(.2);
+pause(.5);
 close all;
 
 
