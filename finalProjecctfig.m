@@ -217,7 +217,7 @@ elseif get(handles.planetMoon,'Value')
 else
     g = 3.711;
 end
-ogLength = 0.24849;
+ogLength = .2400615;
 time = [0:1:14*24*60*60]; %2 weeks, update every second
 ogTemp = str2double(get(handles.initialTemp,'String'));
 fTemp = str2double(get(handles.finalTemp,'String'));
@@ -235,9 +235,13 @@ for r=2:length(time)
 end
 axes(handles.errorGraph);
 yyaxis left
-plot(time,periodError,time,zeros(1,length(time))+periodCorrect);
+plot(time/3600/24,periodError,time/3600/24,zeros(1,length(time))+periodCorrect);
+title('Error of pendulum')
+xlabel('time (days)')
+ylabel('Period of pendulum (s)')
 yyaxis right
-plot(time,totalError)
+plot(time/3600/24,totalError)
+ylabel('Total error (s)')
 
 % --- Executes on button press in clearButton.
 function clearButton_Callback(hObject, eventdata, handles)
