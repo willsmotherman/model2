@@ -22,7 +22,7 @@ function varargout = finalProjecctfig(varargin)
 
 % Edit the above text to modify the response to help finalProjecctfig
 
-% Last Modified by GUIDE v2.5 17-Apr-2018 16:12:47
+% Last Modified by GUIDE v2.5 17-Apr-2018 16:16:30
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -174,13 +174,13 @@ function planetEarth_Callback(hObject, eventdata, handles)
 % Hint: get(hObject,'Value') returns toggle state of planetEarth
 
 
-% --- Executes on button press in pause.
+% --- Executes on button press in pauseButton.
 function pause_Callback(hObject, eventdata, handles)
-% hObject    handle to pause (see GCBO)
+% hObject    handle to pauseButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of pause
+% Hint: get(hObject,'Value') returns toggle state of pauseButton
 
 
 % --- Executes on button press in goButton.
@@ -345,7 +345,7 @@ cla reset;
 
 
 % --- Executes on button press in stopButton.
-function stopButton_Callback(hObject, eventdata, handles)
+function pauseButton_Callback(hObject, eventdata, handles)
 % hObject    handle to stopButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
