@@ -254,7 +254,7 @@ deltaT = .05;
 acc = 0;
 mass = 4;
 
-initial_angle = deg2rad(64.1);
+initial_angle = deg2rad(30);
 T = 2*pi*sqrt(l/gravity)*(1+(1/16)*initial_angle*initial_angle + (11/3072)*initial_angle*initial_angle*initial_angle*initial_angle);
 angle = initial_angle;
 velocity = 0;
@@ -268,7 +268,7 @@ PE = mass*gravity*(-cos(angle)*l+l);
     
 totalEnergyMax = KEold + PE;
 
-
+periods = [T];
 tic;
 n = 0;
 xv=true;
@@ -294,12 +294,18 @@ while(xv)
     ylim([-1.5*olength*2 .5*olength*2]);
     pos = [x(2)-.05 y(2)-.05 .1 .1]; 
     rectangle('Position',pos,'Curvature',[1 1],'FaceColor','b');
-    text(-olength*2,-1.1*olength*2,strcat('Period:',num2str(T)));
+    text(-olength*2,-1.1*olength*2,strcat('Period:',num2str(mean(periods))));
     text(-olength*2,-1.3*olength*2,strcat('Length:',num2str(l)));
     pbaspect([1 1 1]);
     l = changeLength(ogLength,newLength(end),toc);
     %fprintf('Angle:%g Velocity:%g Time:%g\n',angle,velocity,toc);
     [totalEnergyMax, T] = sliderCallback( velocity, l, angle, mass, gravity);
+    if(length(periods)==25)
+        periods = periods(2:end);
+        periods(end + 1) = T;
+    else
+        periods(end + 1) = T;
+    end
     n2 = toc;
     %fprintf('%g, ',(n2-n));
     pause(deltaT-(n2-n));
