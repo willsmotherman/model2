@@ -297,6 +297,7 @@ while(xv)
     text(-olength*2,-1.1*olength*2,strcat('Period:',num2str(T)));
     text(-olength*2,-1.3*olength*2,strcat('Length:',num2str(l)));
     pbaspect([1 1 1]);
+    l = changeLength(ogLength,newLength(end),toc);
     %fprintf('Angle:%g Velocity:%g Time:%g\n',angle,velocity,toc);
     [totalEnergyMax, T] = sliderCallback( velocity, l, angle, mass, gravity);
     n2 = toc;
