@@ -1,3 +1,10 @@
+
+
+% End initialization code - DO NOT EDIT
+
+
+
+
 function varargout = finalProjecctfig(varargin)
 % FINALPROJECCTFIG MATLAB code for finalProjecctfig.fig
 %      FINALPROJECCTFIG, by itself, creates a new FINALPROJECCTFIG or raises the existing
@@ -41,7 +48,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
-% End initialization code - DO NOT EDIT
+
 
 
 % --- Executes just before finalProjecctfig is made visible.
@@ -185,16 +192,11 @@ function errorToggle_Callback(hObject, eventdata, handles)
 
 % --- Executes on button press in goButton.
 function goButton_Callback(hObject, eventdata, handles)
+global xv;
+xv=false;
 % hObject    handle to goButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-axes(handles.pendulumGraph);
-plot([.2,.3,.4],[.7,.4,.3])
-if(get(handles.errorToggle,'Value')==0)
-    plot([.2,.3,.4],[.7,.4,.8])
-else
-    plot([.4,.3,.4],[.7,.4,.8])
-end
 a = get(handles.material,'Value');
 switch a
     case 1
@@ -226,6 +228,71 @@ periodError = 2*pi()*(newLength/g).^.5;
 axes(handles.errorGraph);
 plot(time,periodError,3600,periodCorrect,'o');
 
+axes(handles.pendulumGraph);
+l = 1;
+olength = l;
+gravity = 9.8;
+deltaT = .02;
+acc = 0;
+mass = 4;
+
+initial_angle = deg2rad(64.1);
+T = 2*pi*sqrt(l/gravity)*(1+(1/16)*initial_angle*initial_angle + (11/3072)*initial_angle*initial_angle*initial_angle*initial_angle);
+angle = initial_angle;
+velocity = 0;
+time = 0;
+linVx = velocity*l*cos(angle);
+linVy = velocity*l*sin(angle);
+linV = sqrt(linVx*linVx +linVy*linVy);
+KEold = linV*linV*.5*mass;
+
+PE = mass*gravity*(-cos(angle)*l+l);
+    
+totalEnergyMax = KEold + PE;
+
+tic;
+n = 0;
+xv=true;
+while(xv)
+    maxVelocity = sqrt(2*totalEnergyMax/mass)/l;
+    
+    acc = (-1 * gravity/l) * sin(angle)*deltaT;
+    velocity = velocity + acc;
+    angle = mod(angle + velocity*deltaT+pi,2*pi)-pi;
+    time = time + deltaT;
+    x(1) = 0;
+    y(1) = 0;
+    x(2) = sin(angle)*l;
+    y(2) = -cos(angle)*l;
+    plot(x,y);
+    xlim([-olength*2 olength*2]);
+    ylim([-1.5*olength*2 .5*olength*2]);
+    pos = [x(2)-.125 y(2)-.125 .25 .25]; 
+    rectangle('Position',pos,'Curvature',[1 1],'FaceColor','b');
+    text(-olength*2,-1.1*olength*2,strcat('Period:',num2str(T)));
+    text(-olength*2,-1.3*olength*2,strcat('Length:',num2str(l)));
+    pbaspect([1 1 1]);
+    %fprintf('Angle:%g Velocity:%g Time:%g\n',angle,velocity,toc);
+    l = l + .005*sin(toc/2);
+    [totalEnergyMax, T] = sliderCallback( velocity, l, angle, mass, gravity);
+    n2 = toc;
+    %fprintf('%g, ',(n2-n));
+    pause(deltaT-(n2-n));
+    n = toc;
+end
+
+function [totalEnergyMax, T] = sliderCallback( velocity, length, angle, mass, gravity)
+    linV = velocity*length;
+    KEold = linV*linV*.5*mass;
+
+    PE = mass*gravity*(-cos(angle)*length+length);
+
+    totalEnergyMax = KEold + PE;
+
+    initial_angle = acos(-((totalEnergyMax/mass/gravity)-length)/length);
+    %fprintf('PE:%g Tot: %g\n',PE,totalEnergyMax);
+    T = 2*pi*sqrt(length/gravity)*(1+(1/16)*initial_angle*initial_angle + (11/3072)*initial_angle*initial_angle*initial_angle*initial_angle);
+
 
 
 % --- Executes on button press in clearButton.
@@ -240,9 +307,26 @@ cla;
 axes(handles.errorGraph);
 cla;
 
-
+ 
 % --- Executes on button press in stopButton.
 function stopButton_Callback(hObject, eventdata, handles)
 % hObject    handle to stopButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+%function CloseRequestFcn(hObject, eventdata, handles)
+%    setGlobalx(false);
+%    shh=get(0,'ShowHiddenHandles');
+%set(0,'ShowHiddenHandles','on');
+%delete(get(0,'CurrentFigure'));
+%set(0,'ShowHiddenHandles',shh);
+
+function figure1_CloseRequestFcn(hObject, eventdata, handles)
+global xv;
+% hObject    handle to figure1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% Hint: delete(hObject) closes the figure
+xv=false;
+delete(hObject);
