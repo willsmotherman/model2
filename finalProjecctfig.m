@@ -285,8 +285,8 @@ while(xv)
     time = time + deltaT;
     x(1) = 0;
     y(1) = 0;
-    x(2) = sin(angle)*l;
-    y(2) = -cos(angle)*l;
+    x(2) = sin(angle)*(l+(l-ogLength)*5);
+    y(2) = -cos(angle)*(l+(l-ogLength)*5);
     plot(x,y);
     set(gca,'xtick',[])
     set(gca,'ytick',[])

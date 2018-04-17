@@ -33,8 +33,8 @@ while(true)
     time = time + deltaT;
     x(1) = 0;
     y(1) = 0;
-    x(2) = sin(angle)*length;
-    y(2) = -cos(angle)*length;
+    x(2) = sin(angle)*length +(ogLength-length)*5;
+    y(2) = -cos(angle)*length+(ogLength-length)*5;
     figure(1);
     plot(x,y);
     xlim([-olength*2 olength*2]);
@@ -45,7 +45,7 @@ while(true)
     text(-olength*2,-1.3*olength*2,strcat('Length:',num2str(length)));
     pbaspect([1 1 1]);
     %fprintf('Angle:%g Velocity:%g Time:%g\n',angle,velocity,toc);
-    length = length + .005*sin(toc/2);
+    length = changeLength(
     [totalEnergyMax, T] = sliderCallback( velocity, length, angle, mass, gravity);
     n2 = toc;
     %fprintf('%g, ',(n2-n));
