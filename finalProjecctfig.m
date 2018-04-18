@@ -256,7 +256,7 @@ for r=2:length(time)
 end
 axes(handles.errorGraph);
 yyaxis left
-plot(time/3600/24,periodError,time/3600/24,zeros(1,length(time))+periodCorrect);
+plot(time/3600/24,periodError);
 title('Error of pendulum')
 xlabel('time (days)')
 ylabel('Period of pendulum (s)')
