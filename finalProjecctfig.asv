@@ -230,9 +230,7 @@ fTemp = str2double(get(handles.finalTemp,'String'));
 newTemp = linspace(ogTemp,fTemp,length(time));
 newLength = alpha*ogLength*(newTemp-ogTemp)+ogLength;
 if(isnan(ogTemp)||isnan(fTemp))
-    f = msgbox('One or more temperatures not defined','Error','error','modal');
-    return;
-end
+    error('One ')
 
 initial_angle = deg2rad(30);
 periodCorrect = 2*pi*sqrt(ogLength/g)*(1+(1/16)*initial_angle*initial_angle + (11/3072)*initial_angle*initial_angle*initial_angle*initial_angle);
