@@ -304,17 +304,19 @@ while(xv)
     time = time + deltaT;
     x(1) = 0;
     y(1) = 0;
-    x(2) = sin(angle)*(l+(l-ogLength)*5);
-    y(2) = -cos(angle)*(l+(l-ogLength)*5);
+
+    x(2) = sin(angle)*(.2400615+.2400615*((l-ogLength)/(newLength(end)-newLength(1))));
+    y(2) = -cos(angle)*(.2400615+.2400615*((l-ogLength)/(newLength(end)-newLength(1))));
     plot(x,y);
+    xlabel('*Length not to scale','fontsize',8);
     set(gca,'xtick',[])
     set(gca,'ytick',[])
     xlim([-olength*2 olength*2]);
     ylim([-1.5*olength*2 .5*olength*2]);
     pos = [x(2)-.05 y(2)-.05 .1 .1]; 
     rectangle('Position',pos,'Curvature',[1 1],'FaceColor','b');
-    text(-olength*2,-1.1*olength*2,strcat('Period:',num2str(mean(periods))));
-    text(-olength*2,-1.3*olength*2,strcat('Length:',num2str(l)));
+    text(-olength*2,-1.1*olength*2,strcat('Period:',num2str(mean(periods)),' s'));
+    text(-olength*2,-1.3*olength*2,strcat('Length:',num2str(l),' m'));
     pbaspect([1 1 1]);
     l = changeLength(ogLength,newLength(end),toc-totPaused);
     %fprintf('Angle:%g Velocity:%g Time:%g\n',angle,velocity,toc);
