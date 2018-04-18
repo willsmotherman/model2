@@ -233,6 +233,15 @@ if(isnan(ogTemp)||isnan(fTemp))
     f = msgbox('One or more temperatures not defined','Error','error','modal');
     return;
 end
+if(ogTemp<-273.15||fTemp<-273.15)
+    f = msgbox('One or more temperatures is less than absolute zero','Error','error','modal');
+    return;
+end
+if(ogTemp>1.41678571*10^32||fTemp>1.41678571*10^32)
+    f = msgbox('One or more temperatures is greater than absolute hot','Error','error','modal');
+    return;
+end
+
 
 initial_angle = deg2rad(30);
 periodCorrect = 2*pi*sqrt(ogLength/g)*(1+(1/16)*initial_angle*initial_angle + (11/3072)*initial_angle*initial_angle*initial_angle*initial_angle);
