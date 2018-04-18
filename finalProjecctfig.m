@@ -192,6 +192,8 @@ global xv;
 xv = false;
 global pausew;
 pausew = false;
+global done;
+done = false;
 
 a = get(handles.material,'Value');
 switch a
@@ -272,10 +274,12 @@ periods = [T];
 tic;
 n = 0;
 xv=true;
+totPaused = 0;
 while(xv)
-    drawnow();
     while(pausew)
+        initi = toc;
         drawnow();
+        totPaused = (toc-initi)+totPaused;
     end
     maxVelocity = sqrt(2*totalEnergyMax/mass)/l;
     
@@ -297,7 +301,7 @@ while(xv)
     text(-olength*2,-1.1*olength*2,strcat('Period:',num2str(mean(periods))));
     text(-olength*2,-1.3*olength*2,strcat('Length:',num2str(l)));
     pbaspect([1 1 1]);
-    l = changeLength(ogLength,newLength(end),toc);
+    l = changeLength(ogLength,newLength(end),toc-totPaused);
     %fprintf('Angle:%g Velocity:%g Time:%g\n',angle,velocity,toc);
     [totalEnergyMax, T] = sliderCallback( velocity, l, angle, mass, gravity);
     if(length(periods)==25)
@@ -310,6 +314,15 @@ while(xv)
     %fprintf('%g, ',(n2-n));
     pause(deltaT-(n2-n));
     n = toc;
+    drawnow();
+end
+if(~done)
+    axes(handles.pendulumGraph);
+    cla reset;
+    axes(handles.errorGraph);
+    cla reset;
+    axes(handles.errorGraph);
+    cla reset;
 end
 
 function [totalEnergyMax, T] = sliderCallback( velocity, length, angle, mass, gravity)
@@ -337,11 +350,9 @@ xv = false;
 global pausew;
 if(pausew)
     pausew = false;
+    set(handles.pauseButton,'value',0);
 end
-axes(handles.pendulumGraph);
-cla reset;
-axes(handles.errorGraph);
-cla reset;
+
 
 
 % --- Executes on button press in stopButton.
@@ -359,11 +370,13 @@ end
 
 function figure1_CloseRequestFcn(hObject, eventdata, handles)
 global xv;
+global done;
 % hObject    handle to figure1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % Hint: delete(hObject) closes the figure
 xv=false;
+done = true;
 delete(hObject);
 pause(.5);
 close all;
