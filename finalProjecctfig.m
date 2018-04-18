@@ -196,6 +196,8 @@ pausew = false;
 global done;
 done = false;
 
+set(handles.pauseButton,'value',0);
+
 a = get(handles.material,'Value');
 switch a
     case 1
@@ -230,15 +232,15 @@ fTemp = str2double(get(handles.finalTemp,'String'));
 newTemp = linspace(ogTemp,fTemp,length(time));
 newLength = alpha*ogLength*(newTemp-ogTemp)+ogLength;
 if(isnan(ogTemp)||isnan(fTemp))
-    f = msgbox('One or more temperatures not defined','Error','error','modal');
+    msgbox('One or more temperatures not defined','Error','error','modal');
     return;
 end
 if(ogTemp<-273.15||fTemp<-273.15)
-    f = msgbox('One or more temperatures is less than absolute zero','Error','error','modal');
+    msgbox('One or more temperatures is less than absolute zero','Error','error','modal');
     return;
 end
 if(ogTemp>1.41678571*10^32||fTemp>1.41678571*10^32)
-    f = msgbox('One or more temperatures is greater than absolute hot','Error','error','modal');
+    msgbox('One or more temperatures is greater than absolute hot','Error','error','modal');
     return;
 end
 
@@ -267,7 +269,6 @@ l = ogLength;
 olength = l;
 gravity = g;
 deltaT = .05;
-acc = 0;
 mass = 4;
 
 initial_angle = deg2rad(30);
@@ -295,7 +296,7 @@ while(xv)
         drawnow();
         totPaused = (toc-initi)+totPaused;
     end
-    maxVelocity = sqrt(2*totalEnergyMax/mass)/l;
+    %maxVelocity = sqrt(2*totalEnergyMax/mass)/l;
     
     acc = (-1 * gravity/l) * sin(angle)*deltaT;
     velocity = velocity + acc;
@@ -392,7 +393,6 @@ global done;
 xv=false;
 done = true;
 delete(hObject);
-pause(.5);
 close all;
 
 
